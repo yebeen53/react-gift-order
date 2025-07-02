@@ -13,22 +13,26 @@ interface LocationState {
 
 const logContainer = (theme: Theme) => css`
   max-width: 360px;
-  margin: 80px auto 0;
+  margin: 200px auto 0;
   display: flex;
   flex-direction: column;
-  gap: ${theme.spacing.spacing1};
+  justify-content: center;
+  gap: ${theme.spacing.spacing5};
   color: ${theme.colors.semantic.textDefault};
 `;
 
 const logStyle = (theme: Theme, hasError: boolean) => css`
-  padding: 12px;
+  width: 100%;
+  padding: 8px 0 8px 0;
   font-size: 16px;
-  border: 1px solid ${hasError ? theme.colors.red1000 : theme.colors.semantic.borderDefault};
-  border-radius: 6px;
+  border: none;
+  border-bottom: 1px solid ${hasError?theme.colors.red800 : theme.colors.semantic.borderDefault};
+  background: transparent;
   outline: none;
   &::placeholder {
-    color: ${hasError ? theme.colors.red1000 : theme.colors.gray400};
+    color: ${hasError?theme.colors.red1000 : theme.colors.gray400};
   }
+ 
 `;
 const isValidEmail = (email: string) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -54,7 +58,7 @@ const Login = () => {
   const pwError=!pw.trim()
   ?'비밀번호를 입력해주세요'
   :!isValidPw(pw)
-  ?'비밀번호는 8글자 이상이어야합니다.'
+  ?'비밀번호는 8글자 이상 이어야합니다.'
   :'';
   const handleLogin = () => {
     if (isValidId(id) && isValidPw(pw)) {
@@ -80,7 +84,7 @@ const Login = () => {
         css={logStyle(theme, touchedId && !isValidId(id))}
       />
       {touchedId && (
-  <div style={{ color: theme.colors.red900, fontSize: 12, marginTop: 4 }}>
+  <div style={{ color: theme.colors.red800, fontSize: 12, marginTop: 4 }}>
     {!id.trim()
       ? '아이디를 입력해주세요.'
       : !isValidEmail(id.trim())
@@ -101,11 +105,13 @@ const Login = () => {
         css={logStyle(theme, touchedPw && !isValidPw(pw))}
       />
       {touchedPw && (
-  <div style={{ color: theme.colors.red900, fontSize: 12, marginTop: 4 }}>
+  <div style={{ color: theme.colors.red800, fontSize: 12, marginTop: 4 }}>
     {pwError}
   </div>
 )}
-      <Button onClick={handleLogin} baseColor={theme.colors.semantic.kakaoYellow}>
+      <Button onClick={handleLogin} baseColor={theme.colors.semantic.kakaoYellow}
+      textColor='black'
+      >
         로그인
       </Button>
 
