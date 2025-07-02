@@ -4,10 +4,13 @@ import type { Theme } from '@/theme';
 import { useSearchParams } from 'react-router-dom';
 import Button from '@/Button';
 import GiftItem from '@/GiftItem';
+import { useState } from 'react';
+
 const tabs = ['전체', '여성이', '남성이', '청소년이'];
 const subTabs = ['받고 싶어한', '많이 선물한', '위시로 받은'];
 
-const products = Array.from({ length: 6 }).map((_, i) => ({
+
+const products = Array.from({ length: 18 }).map((_, i) => ({
   id: i + 1,
   brand: 'BBQ',
   name: 'BBQ',
@@ -45,16 +48,11 @@ display: grid;
 grid-template-columns: repeat(3, 1fr);
 gap: ${theme.spacing.spacing4};
 `;
-
-
-const more=(theme:Theme)=>css`
-border:1px solid ${theme.colors.semantic.borderDefault};
-border-radius: 10px;
+const morestyle=(theme:Theme)=>css`
 display:flex;
-align-items: center;
-justify-content: center;
-padding:5px;
-`
+align-items:center;
+justify-content:center`
+
 
 const GiftRanking = () => {
   const theme = useCustomTheme();
@@ -84,6 +82,10 @@ const GiftRanking = () => {
     setSearchParams({ gender: selectedTab, category: subTab }, { replace: true });
   };
   
+  const [visible,setvisible]=useState(6);
+  const handleMore=()=>{
+    setvisible((prev)=>Math.min(prev+3,products.length));
+  }
 
   return (
     <section css={sectionStyle(theme)}>
@@ -119,7 +121,7 @@ const GiftRanking = () => {
       </div>
 
       <div css={gridStyle(theme)}>
-  {products.map((item) => (
+  {products.slice(0,visible).map((item) => (
     <GiftItem
       key={item.id}
       id={item.id}
@@ -132,8 +134,11 @@ const GiftRanking = () => {
   ))}
 </div>
 
-
-      <div css={more(theme)}>더보기</div>
+      <div css={morestyle(theme)}>
+        <Button onClick={handleMore}
+        baseColor='white'
+        textColor='black'
+        > 더보기</Button></div>
     </section>
   );
 }; export default GiftRanking;
