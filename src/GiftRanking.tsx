@@ -48,7 +48,7 @@ display: grid;
 grid-template-columns: repeat(3, 1fr);
 gap: ${theme.spacing.spacing4};
 `;
-const morestyle=(theme:Theme)=>css`
+const morestyle=css`
 display:flex;
 align-items:center;
 justify-content:center`
@@ -134,7 +134,7 @@ const GiftRanking = () => {
   ))}
 </div>
 
-      <div css={morestyle(theme)}>
+      <div css={morestyle}>
         <Button onClick={handleMore}
         baseColor='white'
         textColor='black'
