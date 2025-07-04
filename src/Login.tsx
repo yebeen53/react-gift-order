@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
-import type { Theme } from '@/theme';
-import { css } from "@emotion/react";
+import { useNavigate, useLocation } from 'react-router-dom';
+import { css } from '@emotion/react';
 import useCustomTheme from '@/useCustomTheme';
-import Button from "@/Button";
-import useCustomChange from "@/useCustomChange";
+import useLoginForm from '@/useLoginForm';
+import Button from '@/Button';
+import type { Theme } from '@/theme';
+
 interface LocationState {
   from?: {
     pathName: string;
@@ -23,19 +23,17 @@ const logContainer = (theme: Theme) => css`
 
 const logStyle = (theme: Theme, hasError: boolean) => css`
   width: 100%;
-  padding: 8px 0 8px 0;
+  padding: 8px 0;
   font-size: 16px;
   border: none;
-  border-bottom: 1px solid ${hasError?theme.colors.red800 : theme.colors.semantic.borderDefault};
+  border-bottom: 1px solid
+    ${hasError ? theme.colors.red800 : theme.colors.semantic.borderDefault};
   background: transparent;
   outline: none;
   &::placeholder {
-    color: ${hasError?theme.colors.red1000 : theme.colors.gray400};
+    color: ${hasError ? theme.colors.red1000 : theme.colors.gray400};
   }
- 
 `;
-const isValidEmail = (email: string) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 const Login = () => {
   const theme = useCustomTheme();
@@ -44,77 +42,68 @@ const Login = () => {
   const state = location.state as LocationState | null;
   const from = state?.from?.pathName ?? '/';
 
-  const [id, setId] = useState('');
-  const [pw, setPw] = useState('');
-  const [touchedId, setTouchedId] = useState(false);
-  const [touchedPw, setTouchedPw] = useState(false);
+  const {
+    id,
+    pw,
+    setId,
+    setPw,
+    touchedId,
+    touchedPw,
+    setTouchedId,
+    setTouchedPw,
+    isValidId,
+    isValidPw,
+    idError,
+    pwError,
+  } = useLoginForm();
 
-  const { setTrue, setFalse } = useCustomChange();
-
-  const isValidId = (value: string) =>{ 
-    return value.trim().length > 0 && isValidEmail(value.trim());}
-  
-  const isValidPw = (value: string) => value.trim().length >= 8;
-  const pwError=!pw.trim()
-  ?'비밀번호를 입력해주세요'
-  :!isValidPw(pw)
-  ?'비밀번호는 8글자 이상 이어야합니다.'
-  :'';
   const handleLogin = () => {
-    if (isValidId(id) && isValidPw(pw)) {
+    if (isValidId && isValidPw) {
       navigate(from, { replace: true });
     } else {
       setTouchedId(true);
       setTouchedPw(true);
     }
   };
+
   return (
     <div css={logContainer(theme)}>
-      <h2 style={{ textAlign: "center" }}>KaKao</h2>
+      <h2 style={{ textAlign: 'center' }}>KaKao</h2>
 
       <input
         placeholder="아이디"
         value={id}
         onChange={(e) => setId(e.target.value)}
-        onFocus={() => setTrue()}
-        onBlur={() => {
-          setTouchedId(true);
-          setFalse();
-        }}
-        css={logStyle(theme, touchedId && !isValidId(id))}
+        onBlur={() => setTouchedId(true)}
+        css={logStyle(theme, touchedId && !isValidId)}
       />
-      {touchedId && (
-  <div style={{ color: theme.colors.red800, fontSize: 12, marginTop: 4 }}>
-    {!id.trim()
-      ? '아이디를 입력해주세요.'
-      : !isValidEmail(id.trim())
-      ? '아이디는 이메일 형식으로 입력해주세요.'
-      : null}
-  </div>
-)}
+      {touchedId && idError && (
+        <div style={{ color: theme.colors.red800, fontSize: 12, marginTop: 4 }}>
+          {idError}
+        </div>
+      )}
+
       <input
         type="password"
         placeholder="비밀번호"
         value={pw}
         onChange={(e) => setPw(e.target.value)}
-        onFocus={() => setTrue()}
-        onBlur={() => {
-          setTouchedPw(true);
-          setFalse();
-        }}
-        css={logStyle(theme, touchedPw && !isValidPw(pw))}
+        onBlur={() => setTouchedPw(true)}
+        css={logStyle(theme, touchedPw && !isValidPw)}
       />
-      {touchedPw && (
-  <div style={{ color: theme.colors.red800, fontSize: 12, marginTop: 4 }}>
-    {pwError}
-  </div>
-)}
-      <Button onClick={handleLogin} baseColor={theme.colors.semantic.kakaoYellow}
-      textColor='black'
+      {touchedPw && pwError && (
+        <div style={{ color: theme.colors.red800, fontSize: 12, marginTop: 4 }}>
+          {pwError}
+        </div>
+      )}
+
+      <Button
+        onClick={handleLogin}
+        baseColor={theme.colors.semantic.kakaoYellow}
+        textColor="black"
       >
         로그인
       </Button>
-
     </div>
   );
 };
