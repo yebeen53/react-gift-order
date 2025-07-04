@@ -1,52 +1,51 @@
 import { css } from '@emotion/react';
 import useCustomTheme from './useCustomTheme';
-import category  from '../mockdata';
-import type{Theme} from '@/theme';
+import category from '../mockdata';
+import type { Theme } from '@/theme';
 
-const wrapperStyle = (theme:Theme)=>css`
-padding: ${theme.spacing.spacing5};
+const wrapperStyle = (theme: Theme) => css`
+  padding: ${theme.spacing.spacing5};
 `;
 
-const titleStyle =  (theme:Theme)=>css`
-font-size: ${theme.typography.title2Bold.fontSize};
-font-weight: ${theme.typography.title2Bold.fontWeight};
-line-height: ${theme.typography.title2Bold.lineHeight};
-margin-bottom: ${theme.spacing.spacing4};
+const titleStyle = (theme: Theme) => css`
+  font-size: ${theme.typography.title2Bold.fontSize};
+  font-weight: ${theme.typography.title2Bold.fontWeight};
+  line-height: ${theme.typography.title2Bold.lineHeight};
+  margin-bottom: ${theme.spacing.spacing4};
 `;
 
-const gridStyle = (theme:Theme)=>css`
-display: grid;
-grid-template-columns: repeat(5, 1fr);
-gap: ${theme.spacing.spacing4};
+const gridStyle = (theme: Theme) => css`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: ${theme.spacing.spacing4};
 
-@media (max-width: 480px) {
-  grid-template-columns: repeat(3, 1fr);
-}
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
-const itemStyle = (theme:Theme)=>css`
-display: flex;
-flex-direction: column;
-align-items: center;
-text-align: center;
+const itemStyle = (theme: Theme) => css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 
-span {
-  font-size: ${theme.typography.label1Regular.fontSize};
-  font-weight: ${theme.typography.label1Regular.fontWeight};
-  line-height: ${theme.typography.label1Regular.lineHeight};
-  color: ${theme.colors.semantic.textDefault};
-  margin-top: ${theme.spacing.spacing2};
-}
+  span {
+    font-size: ${theme.typography.label1Regular.fontSize};
+    font-weight: ${theme.typography.label1Regular.fontWeight};
+    line-height: ${theme.typography.label1Regular.lineHeight};
+    color: ${theme.colors.semantic.textDefault};
+    margin-top: ${theme.spacing.spacing2};
+  }
 
-img {
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-}
+  img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+  }
 `;
 
-
-const GiftThemeSection=()=> {
+const GiftThemeSection = () => {
   const theme = useCustomTheme();
   return (
     <section css={wrapperStyle(theme)}>
@@ -61,4 +60,5 @@ const GiftThemeSection=()=> {
       </div>
     </section>
   );
-}; export default GiftThemeSection;
+};
+export default GiftThemeSection;

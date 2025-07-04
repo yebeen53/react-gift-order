@@ -1,21 +1,33 @@
 import { css, Global } from '@emotion/react';
 import useCustomTheme from './useCustomTheme';
 const GlobalStyles = () => {
-  const theme =useCustomTheme();
-  return( 
+  const theme = useCustomTheme();
+  return (
     <Global
       styles={css`
-        *, *::before, *::after {
+        *,
+        *::before,
+        *::after {
           box-sizing: border-box;
           margin: 0;
           padding: 0;
         }
 
-        html, body {
+        html,
+        body {
           height: 100%;
-          font-family: 'Pretendard', -apple-system, BlinkMacSystemFont,
-            'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
-            'Helvetica Neue', sans-serif;
+          font-family:
+            'Pretendard',
+            -apple-system,
+            BlinkMacSystemFont,
+            'Segoe UI',
+            Roboto,
+            Oxygen,
+            Ubuntu,
+            Cantarell,
+            'Open Sans',
+            'Helvetica Neue',
+            sans-serif;
           max-width: 720px;
           margin-left: auto;
           margin-right: auto;
@@ -28,7 +40,8 @@ const GlobalStyles = () => {
           color: inherit;
         }
 
-        ul, ol {
+        ul,
+        ol {
           list-style: none;
         }
 
@@ -46,7 +59,7 @@ const GlobalStyles = () => {
         }
       `}
     />
-  )
+  );
 };
 
 export default GlobalStyles;

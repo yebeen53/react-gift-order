@@ -12,8 +12,7 @@ function App() {
       <Navibar />
       <Routes>
         <Route path="/" element={<Navigate to="/homepage" replace />} />
-        <Route path="/homepage" element={<Homepage/>}
-        />
+        <Route path="/homepage" element={<Homepage />} />
         <Route path="/homepage/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
