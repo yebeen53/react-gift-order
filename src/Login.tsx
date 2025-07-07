@@ -4,6 +4,7 @@ import useCustomTheme from '@/useCustomTheme';
 import useLoginForm from '@/useLoginForm';
 import Button from '@/Button';
 import type { Theme } from '@/theme';
+import useAuth from './AuthContext';
 
 interface LocationState {
   from?: {
@@ -41,7 +42,7 @@ const Login = () => {
   const location = useLocation();
   const state = location.state as LocationState | null;
   const from = state?.from?.pathName ?? '/';
-
+  const { login } = useAuth();
   const {
     id,
     pw,
@@ -59,6 +60,7 @@ const Login = () => {
 
   const handleLogin = () => {
     if (isValidId && isValidPw) {
+      login({ id, name: id });
       navigate(from, { replace: true });
     } else {
       setTouchedId(true);
