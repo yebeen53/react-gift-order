@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import type { Theme } from '@/theme';
 import useCustomTheme from './useCustomTheme';
 import { useNavigate } from 'react-router-dom';
+import useCheckLogin from './CheckLogin';
 const container = (theme: Theme) => css`
   max-width: 720px;
   height: 50px;
@@ -43,6 +44,7 @@ const preStyle = css`
 const Navibar = () => {
   const theme = useCustomTheme();
   const navigate = useNavigate();
+  const { redirectToMyOrLogin } = useCheckLogin();
   return (
     <div css={container(theme)}>
       <div css={pre} onClick={() => navigate(-1)}>
@@ -51,7 +53,7 @@ const Navibar = () => {
 
       <nav css={navstyle(theme)}>선물하기</nav>
 
-      <div css={per} onClick={() => navigate('/homepage/login')}></div>
+      <div css={per} onClick={redirectToMyOrLogin}></div>
     </div>
   );
 };
