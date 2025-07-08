@@ -2,7 +2,8 @@ import { css } from '@emotion/react';
 import type { Theme } from '@/theme';
 import useCustomTheme from './useCustomTheme';
 import { useNavigate } from 'react-router-dom';
-import useCheckLogin from './CheckLogin';
+import useCheckLogin from './CheckLogin'; 
+
 const container = (theme: Theme) => css`
   max-width: 720px;
   height: 50px;
@@ -45,6 +46,7 @@ const Navibar = () => {
   const theme = useCustomTheme();
   const navigate = useNavigate();
   const { redirectToMyOrLogin } = useCheckLogin();
+
   return (
     <div css={container(theme)}>
       <div css={pre} onClick={() => navigate(-1)}>
