@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import type { Theme } from '@/theme';
+import type { Theme } from '@/data/theme';
 
 interface GiftItemProps {
   id: number;

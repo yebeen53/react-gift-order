@@ -1,10 +1,10 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { css } from '@emotion/react';
-import useCustomTheme from '@/useCustomTheme';
-import useLoginForm from '@/useLoginForm';
-import Button from '@/Button';
-import type { Theme } from '@/theme';
-import useAuth from './AuthContext';
+import useCustomTheme from '@/hooks/useCustomTheme';
+import useLoginForm from '@/hooks/useLoginForm';
+import Button from '@/components/Button';
+import type { Theme } from '@/data/theme';
+import useAuth from '../context/AuthContext';
 
 interface LocationState {
   from?: {

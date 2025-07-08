@@ -1,4 +1,4 @@
-import useAuth from '@/AuthContext';
+import useAuth from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 const MyPage = () => {
@@ -10,8 +10,8 @@ const MyPage = () => {
   }
   const nameFromEmail = user.id.split('@')[0];
   const handleLogout = () => {
-    logout(); // 사용자 정보 초기화
-    navigate('/homepage/login'); // 로그인 페이지로 이동
+    logout();
+    navigate('/homepage/login');
   };
 
   return (
@@ -24,8 +24,7 @@ const MyPage = () => {
         style={{
           marginTop: '24px',
           padding: '10px 20px',
-          backgroundColor: '#FEE500', // 카카오 옐로우
-          color: '#000',
+          backgroundColor: '#FEE500',
           border: 'none',
           borderRadius: '8px',
           cursor: 'pointer',

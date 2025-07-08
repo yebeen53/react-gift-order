@@ -1,10 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import useAuth from '@/AuthContext';
+import useAuth from '@/context/AuthContext';
 
 const useCheckLogin = () => {
-  const { user } = useAuth();
   const navigate = useNavigate();
-
+  const { user } = useAuth();
   const redirectToMyOrLogin = () => {
     if (user) {
       navigate('/my');

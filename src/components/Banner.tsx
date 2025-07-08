@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import useCustomTheme from './useCustomTheme';
-import type { Theme } from '@/theme';
+import useCustomTheme from '../hooks/useCustomTheme';
+import type { Theme } from '@/data/theme';
 
 const containerStyle = (theme: Theme) => css`
   background-color: ${theme.colors.semantic.kakaoYellow};

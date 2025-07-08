@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useLocation, Navigate, useNavigate } from 'react-router-dom';
-import useAuth from '@/AuthContext';
-import orderCard from './orderCard';
-import useCustomTheme from '@/useCustomTheme';
+import useAuth from '@/context/AuthContext';
+import orderCard from '../data/orderCard';
+import useCustomTheme from '@/hooks/useCustomTheme';
 
 const OrderPage = () => {
   const theme = useCustomTheme();

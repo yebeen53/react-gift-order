@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
-import type { Theme } from '@/theme';
-import useCustomTheme from './useCustomTheme';
+import type { Theme } from '@/data/theme';
+import useCustomTheme from '../hooks/useCustomTheme';
 import { useNavigate } from 'react-router-dom';
-import useCheckLogin from './CheckLogin'; 
 
+import useCheckLogin from '../hooks/CheckLogin';
 const container = (theme: Theme) => css`
   max-width: 720px;
   height: 50px;

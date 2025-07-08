@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
-import useCustomTheme from './useCustomTheme';
-import category from '../mockdata';
-import type { Theme } from '@/theme';
+import useCustomTheme from '../hooks/useCustomTheme';
+import category from '../../mockdata';
+import type { Theme } from '@/data/theme';
 
 const wrapperStyle = (theme: Theme) => css`
   padding: ${theme.spacing.spacing5};
