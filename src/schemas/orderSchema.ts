@@ -30,7 +30,7 @@ export const orderSchema = z
       phoneMap.get(recipient.phone)?.push(index);
     });
 
-    for (const [phone, indices] of phoneMap.entries()) {
+    for (const [, indices] of phoneMap.entries()) {
       if (indices.length > 1) {
         indices.forEach((i) => {
           ctx.addIssue({
