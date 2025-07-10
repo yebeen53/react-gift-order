@@ -9,11 +9,11 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useState } from 'react';
 import Button from '@/components/Button';
 import { useNavigate } from 'react-router-dom';
+
 const OrderPage = () => {
   const theme = useCustomTheme();
   const navigate = useNavigate();
   const user = useRequireAuth();
-
   if (!user) return null;
 
   const {
@@ -54,7 +54,7 @@ const OrderPage = () => {
 
   const handleSelectCard = (cardId: number) => {
     const isSelected = selectedCardId === cardId;
-    setValue('selectedCardId', (isSelected ? null : cardId) as number | null);
+    setValue('selectedCardId', isSelected ? null : cardId);
     setValue(
       'message',
       isSelected
@@ -65,8 +65,13 @@ const OrderPage = () => {
 
   const onSubmit: SubmitHandler<OrderFormData> = (data) => {
     alert(
-      `🎉 주문 완료! 총 ${totalPrice.toLocaleString()}원\n보내는 분: ${data.senderName}`
+      `주문이 완료되었습니다.\n` +
+        `상품명: BBQ 양념치킨+크림치즈볼+콜라1.5L\n` +
+        `구매 수량: ${totalQuantity}개\n` +
+        `발신자이름: ${data.senderName}\n` +
+        `메시지: ${data.message}`
     );
+
     navigate('/');
   };
 
@@ -75,11 +80,13 @@ const OrderPage = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      css={{ maxWidth: 480, margin: 'auto', padding: theme.spacing.spacing5 }}
+      css={{
+        maxWidth: '720px',
+        margin: 'auto',
+        padding: theme.spacing.spacing5,
+      }}
     >
-      <h1 css={{ marginBottom: theme.spacing.spacing4 }}>선물하기</h1>
       <section>
-        <h3>메시지 카드 선택</h3>
         <div
           style={{
             display: 'flex',
@@ -95,14 +102,14 @@ const OrderPage = () => {
               alt="card"
               onClick={() => handleSelectCard(card.id)}
               style={{
-                width: 60,
-                height: 60,
+                width: 80,
+                height: 50,
                 borderRadius: 8,
                 cursor: 'pointer',
                 border:
                   selectedCardId === card.id
                     ? `2px solid ${theme.colors.blue900}`
-                    : '1px solid #ccc',
+                    : `1px solid ${theme.colors.semantic.borderDefault}`,
               }}
             />
           ))}
@@ -114,59 +121,106 @@ const OrderPage = () => {
           />
         )}
         {errors.selectedCardId && (
-          <p style={{ color: 'red' }}>{errors.selectedCardId.message}</p>
+          <p style={{ color: theme.colors.semantic.statusCritical }}>
+            {errors.selectedCardId.message}
+          </p>
         )}
       </section>
 
       <div style={{ margin: '12px 0' }}>
         <label>메시지</label>
-        <textarea {...register('message')} rows={3} style={{ width: '100%' }} />
+        <textarea
+          {...register('message')}
+          rows={3}
+          style={{
+            width: '100%',
+            height: '60px',
+            borderRadius: '8px',
+            padding: '5px',
+            border: `1px solid ${theme.colors.semantic.borderDefault}`,
+            backgroundColor: theme.colors.semantic.backgroundDefault,
+            color: theme.colors.semantic.textDefault,
+          }}
+        />
         {errors.message && (
-          <p style={{ color: 'red' }}>{errors.message.message}</p>
+          <p style={{ color: theme.colors.semantic.statusCritical }}>
+            {errors.message.message}
+          </p>
         )}
       </div>
+
       <div>
-        <label>보내는 사람 이름</label>
-        <input {...register('senderName')} style={{ width: '100%' }} />
+        <label>보내는 사람</label>
+        <input
+          {...register('senderName')}
+          style={{
+            width: '100%',
+            height: '40px',
+            borderRadius: '8px',
+            border: `1px solid ${theme.colors.semantic.borderDefault}`,
+            backgroundColor: theme.colors.semantic.backgroundDefault,
+            color: theme.colors.semantic.textDefault,
+          }}
+        />
         {errors.senderName && (
-          <p style={{ color: 'red' }}>{errors.senderName.message}</p>
+          <p style={{ color: theme.colors.semantic.statusCritical }}>
+            {errors.senderName.message}
+          </p>
         )}
       </div>
+
       <section
         style={{
           marginTop: 16,
-          border: '1px solid #ddd',
+          border: `1px solid ${theme.colors.semantic.borderDefault}`,
           borderRadius: 12,
           padding: 16,
-          backgroundColor: '#fafafa',
+          background: theme.colors.semantic.backgroundDefault,
         }}
       >
         <h3 style={{ marginTop: 0, marginBottom: 12 }}>받는 사람</h3>
 
         {fields.length === 0 ? (
-          <p style={{ color: '#888' }}>아직 추가된 받는 사람이 없습니다.</p>
+          <p style={{ color: theme.colors.semantic.textDefault }}>
+            <p>받는 사람이 없습니다.</p>
+            <p>받는 사람을 추가해주세요.</p>
+          </p>
         ) : (
           <ul style={{ paddingLeft: 20, marginBottom: 16 }}>
             {fields.map((field, index) => (
               <li key={field.id}>
-                {watch(`recipients.${index}.name`) || '이름 없음'} /{' '}
-                {watch(`recipients.${index}.phone`) || '번호 없음'} /{' '}
+                {watch(`recipients.${index}.name`) || ''} {''}
+                {watch(`recipients.${index}.phone`) || ''} {''}
                 {watch(`recipients.${index}.quantity`) || 1}개
               </li>
             ))}
           </ul>
         )}
 
-        <Button baseColor="black" onClick={() => setModalOpen(true)}>
-          추가
-        </Button>
-
-        {errors.recipients && typeof errors.recipients.message === 'string' && (
-          <p style={{ color: 'red', marginTop: 8 }}>
+        {typeof errors.recipients?.message === 'string' && (
+          <p
+            style={{
+              color: theme.colors.semantic.statusCritical,
+              marginBottom: 16,
+              fontSize: 13,
+            }}
+          >
             {errors.recipients.message}
           </p>
         )}
+
+        <Button
+          baseColor={theme.colors.semantic.borderDisabled}
+          textColor={theme.colors.semantic.textDefault}
+          onClick={() => {
+            append({ name: '', phone: '', quantity: 1 });
+            setModalOpen(true);
+          }}
+        >
+          {recipients.length > 0 ? '수정' : '추가'}
+        </Button>
       </section>
+
       {isModalOpen && (
         <div
           style={{
@@ -174,7 +228,7 @@ const OrderPage = () => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            backgroundColor: '#fff',
+            backgroundColor: theme.colors.semantic.backgroundDefault,
             padding: 24,
             boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
             borderRadius: 16,
@@ -186,7 +240,13 @@ const OrderPage = () => {
           }}
         >
           <h2 style={{ fontWeight: 700, marginBottom: 8 }}>받는 사람</h2>
-          <p style={{ fontSize: 13, color: '#666', marginBottom: 16 }}>
+          <p
+            style={{
+              fontSize: 13,
+              color: theme.colors.semantic.textDefault,
+              marginBottom: 16,
+            }}
+          >
             * 최대 10명까지 추가할 수 있어요.
             <br />* 받는 사람의 전화번호를 중복으로 입력할 수 없어요.
           </p>
@@ -201,9 +261,9 @@ const OrderPage = () => {
             style={{
               marginBottom: 16,
               padding: '6px 12px',
-              backgroundColor: '#eee',
+              backgroundColor: theme.colors.semantic.backgroundFill,
               borderRadius: 6,
-              border: 'none',
+              border: `1px solid ${theme.colors.semantic.borderDefault}`,
               cursor: fields.length < 10 ? 'pointer' : 'not-allowed',
             }}
             disabled={fields.length >= 10}
@@ -215,7 +275,7 @@ const OrderPage = () => {
             <div
               key={field.id}
               style={{
-                borderTop: '1px solid #ddd',
+                borderTop: `1px solid ${theme.colors.semantic.borderDefault}`,
                 paddingTop: 16,
                 marginBottom: 16,
               }}
@@ -232,13 +292,15 @@ const OrderPage = () => {
                   type="button"
                   onClick={() => remove(index)}
                   style={{
-                    border: '1px solid #ccc',
+                    color: 'black',
+                    background: 'white',
+                    border: `1px solid ${theme.colors.semantic.textDefault}`,
                     fontSize: 16,
                     cursor: 'pointer',
-                    color: '#888',
+                    padding: '3px',
                   }}
                 >
-                  ✕
+                  삭제
                 </button>
               </div>
 
@@ -249,15 +311,17 @@ const OrderPage = () => {
                   style={{
                     width: '100%',
                     padding: '8px 12px',
-                    border: '1px solid #ccc',
+                    border: `1px solid ${theme.colors.semantic.borderDefault}`,
                     borderRadius: 8,
                     marginBottom: 4,
+                    backgroundColor: theme.colors.semantic.backgroundDefault,
+                    color: theme.colors.semantic.textDefault,
                   }}
                 />
                 {errors.recipients?.[index]?.name && (
                   <p
                     style={{
-                      color: 'red',
+                      color: theme.colors.semantic.statusCritical,
                       marginTop: 0,
                       marginBottom: 8,
                       fontSize: 12,
@@ -273,15 +337,17 @@ const OrderPage = () => {
                   style={{
                     width: '100%',
                     padding: '8px 12px',
-                    border: '1px solid #ccc',
+                    border: `1px solid ${theme.colors.semantic.borderDefault}`,
                     borderRadius: 8,
                     marginBottom: 4,
+                    backgroundColor: theme.colors.semantic.backgroundDefault,
+                    color: theme.colors.semantic.textDefault,
                   }}
                 />
                 {errors.recipients?.[index]?.phone && (
                   <p
                     style={{
-                      color: 'red',
+                      color: theme.colors.semantic.statusCritical,
                       marginTop: 0,
                       marginBottom: 8,
                       fontSize: 12,
@@ -290,6 +356,7 @@ const OrderPage = () => {
                     {errors.recipients[index]?.phone?.message}
                   </p>
                 )}
+
                 <input
                   type="number"
                   min={1}
@@ -298,14 +365,16 @@ const OrderPage = () => {
                   style={{
                     width: '100%',
                     padding: '8px 12px',
-                    border: '1px solid #ccc',
+                    border: `1px solid ${theme.colors.semantic.borderDefault}`,
                     borderRadius: 8,
+                    backgroundColor: theme.colors.semantic.backgroundDefault,
+                    color: theme.colors.semantic.textDefault,
                   }}
                 />
                 {errors.recipients?.[index]?.quantity && (
                   <p
                     style={{
-                      color: 'red',
+                      color: theme.colors.semantic.statusCritical,
                       marginTop: 0,
                       marginBottom: 8,
                       fontSize: 12,
@@ -326,8 +395,8 @@ const OrderPage = () => {
                 flex: 1,
                 padding: 12,
                 borderRadius: 8,
-                border: '1px solid #ccc',
-                background: '#fff',
+                border: `1px solid ${theme.colors.semantic.borderDefault}`,
+                background: theme.colors.semantic.backgroundDefault,
               }}
             >
               취소
@@ -340,7 +409,7 @@ const OrderPage = () => {
                 padding: 12,
                 borderRadius: 8,
                 border: 'none',
-                backgroundColor: '#ffeb00',
+                backgroundColor: theme.colors.semantic.kakaoYellow,
                 fontWeight: 'bold',
               }}
             >
