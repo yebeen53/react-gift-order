@@ -47,7 +47,7 @@ const OrderPage = () => {
 
   const productPrice = 29000;
   const totalQuantity = recipients.reduce(
-    (sum, r) => sum + (r.quantity || 0),
+    (sum, r) => sum + Number(r.quantity || 0),
     0
   );
   const totalPrice = totalQuantity * productPrice;
