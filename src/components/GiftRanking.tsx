@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
-import useCustomTheme from './useCustomTheme';
-import type { Theme } from '@/theme';
-import { useSearchParams } from 'react-router-dom';
-import Button from '@/Button';
-import GiftItem from '@/GiftItem';
+import useCustomTheme from '../hooks/useCustomTheme';
+import type { Theme } from '@/data/theme';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import Button from '@/components/Button';
+import GiftItem from '@/components/GiftItem';
 import { useState } from 'react';
 
 const tabs = ['전체', '여성이', '남성이', '청소년이'];
@@ -46,6 +46,7 @@ const gridStyle = (theme: Theme) => css`
   grid-template-columns: repeat(3, 1fr);
   gap: ${theme.spacing.spacing4};
 `;
+
 const morestyle = css`
   display: flex;
   align-items: center;
@@ -55,6 +56,7 @@ const morestyle = css`
 const GiftRanking = () => {
   const theme = useCustomTheme();
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const selectedTab = (() => {
     const genderFromSearchParams = searchParams.get('gender');
@@ -94,6 +96,12 @@ const GiftRanking = () => {
     setVisible((prev) => Math.min(prev + 3, products.length));
   };
 
+  // 상품 클릭 시 주문 페이지로 이동 (예: /order)
+  const handleProductClick = (id: number) => {
+    // 필요하면 상품 id 전달 가능 (state나 쿼리)
+    navigate('/order', { state: { productId: id } });
+  };
+
   return (
     <section css={sectionStyle(theme)}>
       <h2 css={titleStyle(theme)}>실시간 급상승 선물랭킹</h2>
@@ -129,17 +137,23 @@ const GiftRanking = () => {
 
       <div css={gridStyle(theme)}>
         {products.slice(0, visible).map((item) => (
-          <GiftItem
+          <div
             key={item.id}
-            id={item.id}
-            brand={item.brand}
-            name={item.name}
-            price={item.price}
-            image={item.image}
-            theme={theme}
-          />
+            onClick={() => handleProductClick(item.id)}
+            style={{ cursor: 'pointer' }}
+          >
+            <GiftItem
+              id={item.id}
+              brand={item.brand}
+              name={item.name}
+              price={item.price}
+              image={item.image}
+              theme={theme}
+            />
+          </div>
         ))}
       </div>
+
       {visible < products.length && (
         <div css={morestyle}>
           <Button onClick={handleMore} baseColor="white" textColor="black">
@@ -150,4 +164,5 @@ const GiftRanking = () => {
     </section>
   );
 };
+
 export default GiftRanking;

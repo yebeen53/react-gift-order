@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
-import useCustomTheme from './useCustomTheme';
-import type { Theme } from '@/theme';
-
+import useCustomTheme from '../hooks/useCustomTheme';
+import type { Theme } from '@/data/theme';
+import useAuth from '@/context/AuthContext';
 const containerStyle = (theme: Theme) => css`
   padding: ${theme.spacing.spacing4};
   display: flex;
@@ -38,15 +38,18 @@ const bannerStyle = (theme: Theme) => css`
 `;
 const SelectFr = () => {
   const theme = useCustomTheme();
+  const { user } = useAuth();
+
+  const userName = user?.id ? user.id.split('@')[0] + '님' : '';
+
   return (
     <div css={containerStyle(theme)}>
       <div css={friendBoxStyle(theme)}>
         <div css={plusCircleStyle(theme)}>+</div>
-        <span>선물할 친구를 선택해 주세요.</span>
+        <span>{userName} 선물할 친구를 선택해 주세요.</span>
       </div>
       <div css={bannerStyle(theme)}></div>
     </div>
   );
 };
-
 export default SelectFr;

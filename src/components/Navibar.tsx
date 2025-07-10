@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
-import type { Theme } from '@/theme';
-import useCustomTheme from './useCustomTheme';
 import { useNavigate } from 'react-router-dom';
-const container = (theme: Theme) => css`
+import useAuth from '@/context/AuthContext';
+import useCustomTheme from '../hooks/useCustomTheme';
+import type { Theme } from '@/data/theme';
+
+const container = (theme:Theme) => css`
   max-width: 720px;
   height: 50px;
   background: ${theme.colors.semantic.backgroundDefault};
@@ -13,7 +15,7 @@ const container = (theme: Theme) => css`
   padding: 0 16px;
 `;
 
-const navstyle = (theme: Theme) => css`
+const navstyle = (theme:Theme) => css`
   font-size: ${theme.typography.title1Bold.fontSize};
   font-weight: ${theme.typography.title1Bold.fontWeight};
   line-height: ${theme.typography.title1Bold.lineHeight};
@@ -43,6 +45,16 @@ const preStyle = css`
 const Navibar = () => {
   const theme = useCustomTheme();
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const redirectToMyOrLogin = () => {
+    if (user) {
+      navigate('/my');
+    } else {
+      navigate('/homepage/login', { state: { from: '/my' } });
+    }
+  };
+
   return (
     <div css={container(theme)}>
       <div css={pre} onClick={() => navigate(-1)}>
@@ -51,7 +63,7 @@ const Navibar = () => {
 
       <nav css={navstyle(theme)}>선물하기</nav>
 
-      <div css={per} onClick={() => navigate('/homepage/login')}></div>
+      <div css={per} onClick={redirectToMyOrLogin}></div>
     </div>
   );
 };

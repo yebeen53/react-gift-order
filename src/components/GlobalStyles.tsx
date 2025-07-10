@@ -1,5 +1,5 @@
 import { css, Global } from '@emotion/react';
-import useCustomTheme from './useCustomTheme';
+import useCustomTheme from '../hooks/useCustomTheme';
 const GlobalStyles = () => {
   const theme = useCustomTheme();
   return (
