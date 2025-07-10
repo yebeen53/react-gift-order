@@ -34,7 +34,6 @@ export const orderSchema = z
     }
   );
 
-// 🔒 타입 명시적으로 선언
 export type OrderFormData = {
   message: string;
   senderName: string;
