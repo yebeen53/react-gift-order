@@ -1,14 +1,18 @@
-import useAuth from '@/context/AuthContext';
+import useRequireAuth from '@/hooks/useRequireAuth';
+import theme from '@/data/theme';
 import { useNavigate } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import { css } from '@emotion/react';
+import useAuth from '@/context/AuthContext';
+
 const MyPage = () => {
-  const { user, logout } = useAuth();
+  const user = useRequireAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
-  if (!user) {
-    return <Navigate to="/homepage/login" replace />;
-  }
+  if (!user) return null;
+
   const nameFromEmail = user.id.split('@')[0];
+
   const handleLogout = () => {
     logout();
     navigate('/homepage/login');
@@ -21,19 +25,20 @@ const MyPage = () => {
       <p>이메일 주소는 {user.id}입니다.</p>
       <button
         onClick={handleLogout}
-        style={{
-          marginTop: '24px',
-          padding: '10px 20px',
-          backgroundColor: '#FEE500',
-          border: 'none',
-          borderRadius: '8px',
-          cursor: 'pointer',
-          fontWeight: 'bold',
-        }}
+        css={css`
+          margin-top: 24px;
+          padding: ${theme.spacing.spacing3} ${theme.spacing.spacing3};
+          background-color: ${theme.colors.semantic.kakaoYellow};
+          color: ${theme.colors.semantic.textDefault};
+          border: none;
+          cursor: pointer;
+          font-weight: bold;
+        `}
       >
         로그아웃
       </button>
     </div>
   );
 };
+
 export default MyPage;

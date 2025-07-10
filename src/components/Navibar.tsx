@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
-import type { Theme } from '@/data/theme';
-import useCustomTheme from '../hooks/useCustomTheme';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '@/context/AuthContext';
+import useCustomTheme from '../hooks/useCustomTheme';
+import type { Theme } from '@/data/theme';
 
-import useCheckLogin from '../hooks/CheckLogin';
-const container = (theme: Theme) => css`
+const container = (theme:Theme) => css`
   max-width: 720px;
   height: 50px;
   background: ${theme.colors.semantic.backgroundDefault};
@@ -15,7 +15,7 @@ const container = (theme: Theme) => css`
   padding: 0 16px;
 `;
 
-const navstyle = (theme: Theme) => css`
+const navstyle = (theme:Theme) => css`
   font-size: ${theme.typography.title1Bold.fontSize};
   font-weight: ${theme.typography.title1Bold.fontWeight};
   line-height: ${theme.typography.title1Bold.lineHeight};
@@ -45,7 +45,15 @@ const preStyle = css`
 const Navibar = () => {
   const theme = useCustomTheme();
   const navigate = useNavigate();
-  const { redirectToMyOrLogin } = useCheckLogin();
+  const { user } = useAuth();
+
+  const redirectToMyOrLogin = () => {
+    if (user) {
+      navigate('/my');
+    } else {
+      navigate('/homepage/login', { state: { from: '/my' } });
+    }
+  };
 
   return (
     <div css={container(theme)}>

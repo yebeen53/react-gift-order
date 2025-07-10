@@ -4,7 +4,7 @@ import useCustomTheme from '@/hooks/useCustomTheme';
 import useLoginForm from '@/hooks/useLoginForm';
 import Button from '@/components/Button';
 import type { Theme } from '@/data/theme';
-import useAuth from '../context/AuthContext';
+import useAuth from '@/context/AuthContext';
 
 interface LocationState {
   from?: {
